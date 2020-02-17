@@ -1,0 +1,134 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[top=1.25in,left=1.0in,right=1.0in,footskip=0.5in]{geometry}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[slovene,english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+
+\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg}
+\hypersetup{colorlinks=true, linkcolor=LimeGreen, citecolor=LimeGreen, urlcolor=cyan}
+\lstset{basicstyle=\scriptsize, frame=single, tabsize=12, title=Example file {\bf\lstname}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\footnotesize\bf Introduction to Network Analysis ({\color{magenta}INA})}
+\rhead{\footnotesize\bf Homework {\color{magenta}\#0}}
+\cfoot{\thepage}
+\fancypagestyle{titlestyle}{
+\rhead{\footnotesize\bf Spring 2019/20}
+\cfoot{}}
+
+\setcounter{page}{0}
+
+\newcommand{\figref}[1]{{\color{LimeGreen}Figure~\ref{fig:#1}}}
+
+\begin{document} 
+
+\thispagestyle{titlestyle}
+
+\vspace*{0.05in} 
+\begin{center} 
+	{\huge\bf Homework {\color{magenta}\#0}} 
+\end{center} 
+\vspace*{0.05in} 
+
+\paragraph{} This homework is easy and is meant to get you started with network analysis. Although the homework will not be graded, it will still be taken into account for course participation. All questions and comments regarding the homework should be directed to \href{https://piazza.com}{Piazza}.
+
+\section*{Submission details}
+
+\paragraph{} This homework is due on {\bf\color{magenta} February 24th} at 2:00pm, while late days expire on {\bf\color{magenta} February 28th} at 1:00pm. The homework must be submitted as a hard-copy in the submission box in front of R 2.49 and also as an electronic version to \href{https://ucilnica.fri.uni-lj.si/course/view.php?id=183}{eUcilnica}. It can be prepared in either English or Slovene and either written by hand or typed on a computer. The hard-copy should include (1)~this cover sheet with filled out time of the submission and signed honor code, (2)~short answers to the questions, which can also demand proofs, tables, plots, diagrams and other, and (3)~a printout of all the code required to complete the exercises. The electronic submission should include only (1)~answers to the questions in a single file and (2)~all the code in a format of the specific programming language. Note that hard-copies will be graded, while electronic submissions will be used for plagiarism detection. The homework is considered submitted only when both versions have been submitted. Failing to include this honor code in the submission will result in {\bf\color{LimeGreen} 10\% deduction}. Failing to submit all the developed code to \href{https://ucilnica.fri.uni-lj.si/course/view.php?id=183}{eUcilnica} will result in {\bf\color{LimeGreen} 50\% deduction}.
+
+\section*{Honor code}
+
+\paragraph{} The students are strongly encouraged to discuss the homework with other classmates and form study groups. Yet, each student must then solve the homework by herself or himself without the help of others and should be able to redo the homework at a later time. In other words, the students are encouraged to collaborate, but should not copy from one another. Referring to any solutions obtained from classmates, course books, previous years, found online or other, is considered an honor code violation. Also, stating any part of the solutions in class or on \href{https://piazza.com}{Piazza} is considered an honor code violation. Finally, failing to name the correct study group members, or filling out the wrong date or time of the submission, is also considered an honor code violation. Honor code violation will not be tolerated. Any student violating the honor code will be reported to {\bf\color{LimeGreen} faculty disciplinary committee} and vice dean for education.
+
+\vspace*{0.15in}
+\paragraph{Name \& SID:} \rule{4.5in}{0.5pt}
+\paragraph{Study group:} \rule{4.5in}{0.5pt}
+\paragraph{Date \& time:} \rule{2.5in}{0.5pt}
+\paragraph{} I acknowledge and accept the honor code.
+\paragraph{Signature:} \rule{2.5in}{0.5pt}
+
+\pagebreak
+
+\section{Network software ({\color{magenta}4 points})}
+
+\paragraph{} Throughout the course you will be analyzing networks. This can be done using either some programming library or a software tool. As you will be required to analyze large networks and also implement some algorithms on your own, you should first select some network library. However, at least in the case of small networks, it is commonly beneficial to be able to get a quick insight into the network structure just by visualizing it. For this purpose, you should also select some network software. Below is a list of most popular network libraries and software. For most of them you will be able to find tutorials, documentation, code examples, discussion groups and other online. It is strongly recommended that you select a library for the programming language you are most comfortable with. Note also that your selection is not obligatory and you can switch to any other library or tool during the semester.
+
+\begin{description}
+	\item[\href{http://snap.stanford.edu}{SNAP}] C/C++ library for network analysis
+	\item[\href{https://snap.stanford.edu/snappy/}{Snap.py}] Python interface for SNAP library
+	\item[\href{https://networkx.github.io}{NetworkX}] Python library for network analysis and visualization
+	\item[\href{https://graph-tool.skewed.de}{graph-tool}] Python library for network analysis and visualization
+	\item[\href{http://igraph.org}{igraph}] R, Python and C/C++ library for network analysis and visualization
+	\item[\href{https://github.com/jgrapht/jgrapht}{JGraphT}] Java library for network analysis and visualization
+	\item[\href{http://jung.sourceforge.net}{JUNG}] Java library for network analysis and visualization
+	\item[LNA] Java library for network analysis (available upon request)
+\end{description}
+
+\paragraph{} Most popular network software is \href{http://gephi.github.io}{Gephi}, \href{http://mrvar.fdv.uni-lj.si/pajek/}{Pajek}, \href{http://visone.info}{visone}, \href{http://www.graphviz.org}{Graphviz} and \href{https://sites.google.com/site/ucinetsoftware/home}{UCINET}.
+
+\paragraph{} Here is the Zachary karate club network in \href{http://lovro.lpt.fri.uni-lj.si/ina/karate_club.adj}{edge list}, \href{http://lovro.lpt.fri.uni-lj.si/ina/karate_club.net}{Pajek} and \href{http://lovro.lpt.fri.uni-lj.si/ina/karate_club}{LNA} formats (\figref{cake}). This is a simple undirected network. Using your programming library, load the network and print out the number of nodes and links in the network. Using your software tool, try to neatly visualize the network and export or print-screen the figure.
+
+\begin{figure}[b] \centering
+	\includegraphics[width=0.5\textwidth]{cake}
+	\caption{{\bf Zachary karate club network cake}}
+	\label{fig:cake}
+\end{figure}
+
+\subsection*{What to submit?}
+
+\paragraph{} Name selected network programming library and software tool. Very briefly explain your choice. State the number of nodes and links in the karate club network, and print out all code you have used ({\color{magenta}2~points}). Include a visualization of the network ({\color{magenta}2 points}).
+
+\section{Network collection ({\color{magenta}4 points})}
+
+\paragraph{} Within the course you will be analyzing randomly generated synthetic graphs and real-world networks. Prior to the analysis of real-world networks, one must first collect the network and clean it. Contrary to what you might expect, often more time is spent on collecting the network than on analyzing it afterwards.
+
+\subsection{Your own network}
+
+\paragraph{} Map out a network on your own. Try to be creative and collect a network that you have not seen in lectures or labs. The network can be anything, but since you will be analyzing it below, try to make it interesting. You might also use it for your course project. Compute the number of nodes and links, and the average degree in your network using either your network library or software tool.
+
+\subsection{Synthetic random graphs}
+
+\paragraph{} Any network library or tool surely includes an option to generate the simplest possible synthetic graph called the Erd\H{o}s-R\'{e}nyi random graph~\cite{ER59}. Create a random graph with the same number of nodes as in your network and set any other required parameter thus to best fit your network. Compute the number of nodes and links, and the average degree in a generated random graph.
+
+\subsection*{What to submit?}
+
+\begin{description}
+	\item[2.1] Briefly explain your network. What are the nodes and what are the links? State the number of nodes and links, and the average degree in your network ({\color{magenta}2 points}). Print out any code you might have used.
+	\item[2.2] How did you set the random graph parameters? State the number of nodes and links, and the average degree in a generated random graph ({\color{magenta}2 points}). Print out any code you might have used.
+\end{description}
+
+\section{Network analysis ({\color{magenta}4 points})}
+
+\paragraph{} Commonly not all nodes in a network are equally important (\figref{JUNG}). PageRank~\cite{BP98} is probably the most well known measure of node importance and it should be included in any serious network library (as the Erd\H{o}s-R\'{e}nyi random graph above). PageRank is actually the algorithm that put Google in front of the other search engines two decades ago.
+
+\begin{figure}[t] \centering
+	\includegraphics[width=0.725\textwidth]{JUNG}
+	\caption{{\bf \href{http://jung.sourceforge.net}{JUNG} software network with node colors corresponding to PageRank}}
+	\label{fig:JUNG}
+\end{figure}
+
+\subsection{Google's PageRank algorithm}
+
+Using your library compute the PageRank score of all the nodes in your network and print out the labels and scores of ten nodes with the highest PageRank score. Which nodes are the most important according to PageRank and how would you interpret these results? Is the difference between the first and the eighth node substantial or are all first eight nodes equally important?
+
+\subsection{Comparison with random graphs}
+
+Repeat the analysis for a generated Erd\H{o}s-R\'{e}nyi random graph with the same parameters as before and print out the scores of eight most important nodes according to PageRank. How do the PageRank scores compare to those obtained for your network? Is the difference between the first and the eighth node substantial or are all first eight nodes somewhat equally important?
+
+\subsection*{What to submit?}
+
+\begin{description}
+	\item[3.1] Print out the labels and scores of eight most important nodes in your network, and all the code you have used ({\color{magenta}1 point}). Provide brief answers to both questions ({\color{magenta}1 point}).
+	\item[3.2] Print out the scores of eight most important nodes in a generated random graph, and all the code you have used ({\color{magenta}1 point}). Provide brief answers to both questions ({\color{magenta}1 point}).
+\end{description}
+
+\bibliographystyle{alpha}
+\bibliography{biblio}
+
+\end{document}
