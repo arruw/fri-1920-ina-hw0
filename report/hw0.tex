@@ -47,88 +47,179 @@
 \paragraph{} The students are strongly encouraged to discuss the homework with other classmates and form study groups. Yet, each student must then solve the homework by herself or himself without the help of others and should be able to redo the homework at a later time. In other words, the students are encouraged to collaborate, but should not copy from one another. Referring to any solutions obtained from classmates, course books, previous years, found online or other, is considered an honor code violation. Also, stating any part of the solutions in class or on \href{https://piazza.com}{Piazza} is considered an honor code violation. Finally, failing to name the correct study group members, or filling out the wrong date or time of the submission, is also considered an honor code violation. Honor code violation will not be tolerated. Any student violating the honor code will be reported to {\bf\color{LimeGreen} faculty disciplinary committee} and vice dean for education.
 
 \vspace*{0.15in}
-\paragraph{Name \& SID:} \rule{4.5in}{0.5pt}
-\paragraph{Study group:} \rule{4.5in}{0.5pt}
-\paragraph{Date \& time:} \rule{2.5in}{0.5pt}
+\paragraph{Name \& SID:} Matjaž Mav (63130148)
+\paragraph{Study group:} /
+\paragraph{Date \& time:} \today
 \paragraph{} I acknowledge and accept the honor code.
 \paragraph{Signature:} \rule{2.5in}{0.5pt}
 
 \pagebreak
 
-\section{Network software ({\color{magenta}4 points})}
+\section{Network software}
 
-\paragraph{} Throughout the course you will be analyzing networks. This can be done using either some programming library or a software tool. As you will be required to analyze large networks and also implement some algorithms on your own, you should first select some network library. However, at least in the case of small networks, it is commonly beneficial to be able to get a quick insight into the network structure just by visualizing it. For this purpose, you should also select some network software. Below is a list of most popular network libraries and software. For most of them you will be able to find tutorials, documentation, code examples, discussion groups and other online. It is strongly recommended that you select a library for the programming language you are most comfortable with. Note also that your selection is not obligatory and you can switch to any other library or tool during the semester.
+We have picked \textit{NetworkX} Python library since that we already used it before and \textit{Cytoscape} software tool.
+Karate network contains 34 nodes and 78 edges.
 
-\begin{description}
-	\item[\href{http://snap.stanford.edu}{SNAP}] C/C++ library for network analysis
-	\item[\href{https://snap.stanford.edu/snappy/}{Snap.py}] Python interface for SNAP library
-	\item[\href{https://networkx.github.io}{NetworkX}] Python library for network analysis and visualization
-	\item[\href{https://graph-tool.skewed.de}{graph-tool}] Python library for network analysis and visualization
-	\item[\href{http://igraph.org}{igraph}] R, Python and C/C++ library for network analysis and visualization
-	\item[\href{https://github.com/jgrapht/jgrapht}{JGraphT}] Java library for network analysis and visualization
-	\item[\href{http://jung.sourceforge.net}{JUNG}] Java library for network analysis and visualization
-	\item[LNA] Java library for network analysis (available upon request)
-\end{description}
+\begin{lstlisting}[language=Python, caption=src/part1.py]
+import matplotlib.pyplot as plt
+import networkx as nx
 
-\paragraph{} Most popular network software is \href{http://gephi.github.io}{Gephi}, \href{http://mrvar.fdv.uni-lj.si/pajek/}{Pajek}, \href{http://visone.info}{visone}, \href{http://www.graphviz.org}{Graphviz} and \href{https://sites.google.com/site/ucinetsoftware/home}{UCINET}.
+G = nx.read_edgelist("./input/karate_club.adj", create_using=nx.DiGraph)
+print(f"# nodes: {len(G.nodes)}")
+print(f"# edges: {len(G.edges)}")
 
-\paragraph{} Here is the Zachary karate club network in \href{http://lovro.lpt.fri.uni-lj.si/ina/karate_club.adj}{edge list}, \href{http://lovro.lpt.fri.uni-lj.si/ina/karate_club.net}{Pajek} and \href{http://lovro.lpt.fri.uni-lj.si/ina/karate_club}{LNA} formats (\figref{cake}). This is a simple undirected network. Using your programming library, load the network and print out the number of nodes and links in the network. Using your software tool, try to neatly visualize the network and export or print-screen the figure.
+nx.draw_shell(G, labels={n: n  for n in G.nodes})
+plt.savefig("./output/part1.png")
+\end{lstlisting}
 
-\begin{figure}[b] \centering
-	\includegraphics[width=0.5\textwidth]{cake}
-	\caption{{\bf Zachary karate club network cake}}
-	\label{fig:cake}
+\begin{figure}[h]
+\caption{Karate network visualization}
+\includegraphics[width=0.4\paperwidth]{imgs/part1.png}
+\centering
 \end{figure}
 
-\subsection*{What to submit?}
+\pagebreak
 
-\paragraph{} Name selected network programming library and software tool. Very briefly explain your choice. State the number of nodes and links in the karate club network, and print out all code you have used ({\color{magenta}2~points}). Include a visualization of the network ({\color{magenta}2 points}).
+\section{Network collection}
 
-\section{Network collection ({\color{magenta}4 points})}
+\subsubsection*{Our own network}
 
-\paragraph{} Within the course you will be analyzing randomly generated synthetic graphs and real-world networks. Prior to the analysis of real-world networks, one must first collect the network and clean it. Contrary to what you might expect, often more time is spent on collecting the network than on analyzing it afterwards.
+We used our own browser history to create network of our most used workflows in the Firefox browser. Nodes in the network are base domain names (eg. \textit{google.com}) and edges represents link clicks.
 
-\subsection{Your own network}
+We have exported browser history from the Firefox SQLite database \textit{places.sqlite} to the \textit{"input/raw\_history\_data.csv"} file with the following query:
 
-\paragraph{} Map out a network on your own. Try to be creative and collect a network that you have not seen in lectures or labs. The network can be anything, but since you will be analyzing it below, try to make it interesting. You might also use it for your course project. Compute the number of nodes and links, and the average degree in your network using either your network library or software tool.
+\begin{lstlisting}[language=SQL, caption=SQLite query]
+SELECT mh.id, from_visit, url
+FROM moz_historyvisits mh 
+INNER JOIN moz_places mp ON mp.id = mh.place_id
+ORDER BY mh.id
+\end{lstlisting}
 
-\subsection{Synthetic random graphs}
+We have constructed the network with the following code:
 
-\paragraph{} Any network library or tool surely includes an option to generate the simplest possible synthetic graph called the Erd\H{o}s-R\'{e}nyi random graph~\cite{ER59}. Create a random graph with the same number of nodes as in your network and set any other required parameter thus to best fit your network. Compute the number of nodes and links, and the average degree in a generated random graph.
+\begin{lstlisting}[language=Python, caption=src/part2.py]
+import csv
+import re
+import networkx as nx
+from statistics import mean 
 
-\subsection*{What to submit?}
+# read raw data
+raw_data = list()
+with open("input/raw_history_data.csv") as f:
+	raw_data = list(csv.reader(f))
 
-\begin{description}
-	\item[2.1] Briefly explain your network. What are the nodes and what are the links? State the number of nodes and links, and the average degree in your network ({\color{magenta}2 points}). Print out any code you might have used.
-	\item[2.2] How did you set the random graph parameters? State the number of nodes and links, and the average degree in a generated random graph ({\color{magenta}2 points}). Print out any code you might have used.
-\end{description}
+# clean raw data
+cleaned_data = dict()
+for row in raw_data[1:]:
+	visitId = int(row[0])
+	fromVisitId = int(row[1])
+	url = row[3]
 
-\section{Network analysis ({\color{magenta}4 points})}
+	if(not url.startswith("http")): continue
 
-\paragraph{} Commonly not all nodes in a network are equally important (\figref{JUNG}). PageRank~\cite{BP98} is probably the most well known measure of node importance and it should be included in any serious network library (as the Erd\H{o}s-R\'{e}nyi random graph above). PageRank is actually the algorithm that put Google in front of the other search engines two decades ago.
+	match = re.search("^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)", url)
+	url = url[match.regs[0][0]:match.regs[0][1]]
+	domain = url.split("://")[1]
+	baseDomain = ".".join(domain.split(".")[-2:])
 
-\begin{figure}[t] \centering
-	\includegraphics[width=0.725\textwidth]{JUNG}
-	\caption{{\bf \href{http://jung.sourceforge.net}{JUNG} software network with node colors corresponding to PageRank}}
-	\label{fig:JUNG}
+	cleaned_data[visitId] = {"fromVisitId": fromVisitId, "domain": baseDomain}
+
+# construct weighted edges
+edges = dict()
+prevNode = {"domain":"/"}
+for key in sorted(cleaned_data.keys()):
+	node = cleaned_data[key]
+	prevNode = cleaned_data.get(node["fromVisitId"], prevNode)
+	edge = f"{prevNode['domain']}:{node['domain']}"
+	edges[edge] = edges.get(edge, 0) + 1
+
+# build the network
+G = nx.DiGraph()
+G.add_weighted_edges_from([(*edge.split(":"), weight) for edge,weight in edges.items()])
+
+# print the results
+print(f"# nodes: {len(G.nodes)}")
+print(f"# edges: {len(G.edges)}")
+print(f"avg degree: {mean(map(lambda t: t[1], G.degree()))}")
+\end{lstlisting}
+
+This network contains 1123 nodes and 2384 edges with average degree of 4.2.
+
+\subsection*{Synthetic random graph}
+
+We found the equation for the expected number of edges in a network $e = {n\choose 2}*p$, where $n$ denote number of nodes, $p$ the probability of edge creation and $e$ number of edges. Then we have constructed the network with the following code:
+
+\begin{lstlisting}[language=Python, caption=src/part2\_random.py]
+import networkx as nx
+from statistics import mean 
+from scipy.special import binom
+
+# requested number of nodes and edges
+N = 1123
+E = 2384
+
+# calculate probability p and construct random network
+p = E/binom(N, 2)
+G = nx.erdos_renyi_graph(N, p, seed=0)
+
+# print the results
+print(f"# nodes: {len(G.nodes)}")
+print(f"# edges: {len(G.edges)}")
+print(f"avg degree: {mean(map(lambda t: t[1], G.degree()))}")
+\end{lstlisting}
+
+Randomly constructed network contains 1123 nodes and 2366 edges with average degree of 4.2.
+
+\pagebreak
+
+\section{Network analysis}
+
+We constructed both networks the same way as in the section 2. Then we computed rankings using the PageRank algorithm with the following code:
+
+\begin{lstlisting}[language=Python, caption=src/part3.py]
+# ...
+
+# PageRank
+rankings = nx.pagerank(G)
+
+# print results
+{print(f"{k}: {v:.5f}") for k, v in
+    sorted(rankings.items(), key=lambda item: item[1], reverse=True)[:8]}
+\end{lstlisting}
+
+And this was the output:
+
+\begin{lstlisting}[caption=Top rankings based on PageRank algorithm]
+# Browser history network
+duckduckgo.com: 0.06934
+google.com: 0.05878
+github.com: 0.02372
+facebook.com: 0.02005
+youtube.com: 0.01093
+amazon.de: 0.01035
+trello.com: 0.00792
+uni-lj.si: 0.00760
+
+# Random generated network
+569: 0.00239
+454: 0.00229
+966: 0.00211
+173: 0.00208
+178: 0.00206
+22: 0.00192
+532: 0.00192
+438: 0.00187
+\end{lstlisting}
+
+We can observe that ranking score drops much faster on the real network compared to the random generated network.
+
+\begin{figure}[h]
+\caption{Cropped browser history visualization of the top 200 base domains ranked with PageRank algorithm. Size of the node corresponds to the ranking score.}
+\includegraphics[width=0.75\paperwidth,trim={10cm 10cm 10cm 10cm},clip]{imgs/part3.png}
+\centering
 \end{figure}
 
-\subsection{Google's PageRank algorithm}
-
-Using your library compute the PageRank score of all the nodes in your network and print out the labels and scores of ten nodes with the highest PageRank score. Which nodes are the most important according to PageRank and how would you interpret these results? Is the difference between the first and the eighth node substantial or are all first eight nodes equally important?
-
-\subsection{Comparison with random graphs}
-
-Repeat the analysis for a generated Erd\H{o}s-R\'{e}nyi random graph with the same parameters as before and print out the scores of eight most important nodes according to PageRank. How do the PageRank scores compare to those obtained for your network? Is the difference between the first and the eighth node substantial or are all first eight nodes somewhat equally important?
-
-\subsection*{What to submit?}
-
-\begin{description}
-	\item[3.1] Print out the labels and scores of eight most important nodes in your network, and all the code you have used ({\color{magenta}1 point}). Provide brief answers to both questions ({\color{magenta}1 point}).
-	\item[3.2] Print out the scores of eight most important nodes in a generated random graph, and all the code you have used ({\color{magenta}1 point}). Provide brief answers to both questions ({\color{magenta}1 point}).
-\end{description}
-
-\bibliographystyle{alpha}
-\bibliography{biblio}
+% \bibliographystyle{alpha}
+% \bibliography{biblio}
 
 \end{document}
