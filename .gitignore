@@ -391,4 +391,6 @@ dmypy.json
 # End of https://www.gitignore.io/api/latex,python,visualstudiocode
 
 .env/
-myhistory.csv
+raw_history_data.csv
+domain_blacklist.txt
+**/*.sqlite*

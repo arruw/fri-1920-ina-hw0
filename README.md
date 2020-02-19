@@ -4,12 +4,12 @@
 
 ## 2. Network collection
 
-'''sql
+```sql
 SELECT mh.id, from_visit, url
 FROM moz_historyvisits mh 
 INNER JOIN moz_places mp ON mp.id = mh.place_id
 ORDER BY mh.id 
-'''
+```
 
 
 ## 3. Network analysis
